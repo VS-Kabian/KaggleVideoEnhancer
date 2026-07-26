@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 from collections.abc import Iterator
+from decimal import Decimal
 from pathlib import Path
 
 import pytest
 
-from engvit.media.frame_probe import parse_frame_lines
-from engvit.types import Rational
+from engvit.media.frame_probe import parse_frame_lines, stream_source_timing
+from engvit.types import MediaInfo, Rational
+from tests.media.pipeline_helpers import video_stream
 
 
 def test_parse_frame_lines_preserves_negative_pts_and_flags() -> None:
@@ -22,6 +24,68 @@ def test_parse_frame_lines_preserves_negative_pts_and_flags() -> None:
     assert frames[0].interlaced is True
     assert frames[0].top_field_first is True
     assert frames[1].repeat_pict == 1
+
+
+def test_parse_frame_lines_ignores_compact_frame_side_data_suffix() -> None:
+    lines = (
+        "media_type=video|best_effort_timestamp=0|duration=1001|"
+        "interlaced_frame=0|top_field_first=0|"
+        "repeat_pict=0side_data_type="
+        "H.26[45] User Data Unregistered SEI message\n",
+    )
+
+    frames = tuple(parse_frame_lines(lines, Rational(1, 30000)))
+
+    assert len(frames) == 1
+    assert frames[0].best_effort_pts == 0
+    assert frames[0].repeat_pict == 0
+
+
+def test_stream_source_timing_excludes_nested_frame_side_data(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    captured_command: list[str] = []
+
+    class ProbeProcess:
+        stdout = iter(
+            (
+                "media_type=video|best_effort_timestamp=0|duration=1|"
+                "repeat_pict=0|interlaced_frame=0|top_field_first=0\n",
+            )
+        )
+
+        @staticmethod
+        def wait(timeout: int | None = None) -> int:
+            return 0
+
+        @staticmethod
+        def poll() -> int:
+            return 0
+
+        @staticmethod
+        def kill() -> None:
+            raise AssertionError("successful probe must not be killed")
+
+    def popen(command: list[str], **_kwargs: object) -> ProbeProcess:
+        captured_command.extend(command)
+        return ProbeProcess()
+
+    monkeypatch.setattr("engvit.media.frame_probe.subprocess.Popen", popen)
+    selected = video_stream()
+    media = MediaInfo(
+        source=Path("source.mkv"),
+        source_sha256="0" * 64,
+        format_name="matroska",
+        duration_seconds=Decimal("0.1"),
+        streams=(selected,),
+        selected_video_index=selected.index,
+    )
+
+    frames = tuple(stream_source_timing(media, Path("ffprobe")))
+
+    assert len(frames) == 1
+    show_entries = captured_command[captured_command.index("-show_entries") + 1]
+    assert ":frame_side_data=" in show_entries
 
 
 @pytest.mark.parametrize(

@@ -16,6 +16,10 @@ def _fields(line: str) -> dict[str, str]:
         if "=" not in item:
             continue
         key, value = item.split("=", 1)
+        # Some ffprobe compact writers concatenate the first nested
+        # FRAME_SIDE_DATA field directly onto the final FRAME scalar.
+        # The nested section is not part of the requested timing value.
+        value = value.partition("side_data_type=")[0]
         parsed[key] = value
     return parsed
 
@@ -116,7 +120,7 @@ def stream_source_timing(
         "-show_entries",
         (
             "frame=media_type,best_effort_timestamp,duration,pkt_duration,"
-            "repeat_pict,interlaced_frame,top_field_first"
+            "repeat_pict,interlaced_frame,top_field_first:frame_side_data="
         ),
         "-of",
         "compact=p=0:nk=0",
