@@ -1,0 +1,12 @@
+{
+  "schema_version": "1",
+  "generated_from_acceptance_report": null,
+  "capabilities": {
+    "4k": false,
+    "8k": false,
+    "rife": false,
+    "temporal_vsr": false
+  },
+  "reason": "No Kaggle release acceptance matrix has been executed."
+}
+

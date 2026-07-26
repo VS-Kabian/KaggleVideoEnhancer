@@ -1,0 +1,72 @@
+schema_version: "1"
+models:
+  - model_id: realesrgan-x2plus
+    enabled: false
+    architecture: RRDBNet
+    scale: 2
+    input_channels: 3
+    output_channels: 3
+    weight_filename: null
+    weight_sha256: null
+    weight_bytes: null
+    code_ref: unverified
+    code_license: BSD-3-Clause
+    required_packages: {}
+    precision: [fp32]
+    required_tensors: []
+  - model_id: realesrgan-x4plus
+    enabled: false
+    architecture: RRDBNet
+    scale: 4
+    input_channels: 3
+    output_channels: 3
+    weight_filename: null
+    weight_sha256: null
+    weight_bytes: null
+    code_ref: unverified
+    code_license: BSD-3-Clause
+    required_packages: {}
+    precision: [fp32]
+    required_tensors: []
+  - model_id: realesrgan-x4plus-anime
+    enabled: false
+    architecture: RRDBNet
+    scale: 4
+    input_channels: 3
+    output_channels: 3
+    weight_filename: null
+    weight_sha256: null
+    weight_bytes: null
+    code_ref: unverified
+    code_license: BSD-3-Clause
+    required_packages: {}
+    precision: [fp32]
+    required_tensors: []
+  - model_id: realesrgan-general-x4v3
+    enabled: false
+    architecture: SRVGGNetCompact
+    scale: 4
+    input_channels: 3
+    output_channels: 3
+    weight_filename: null
+    weight_sha256: null
+    weight_bytes: null
+    code_ref: unverified
+    code_license: BSD-3-Clause
+    required_packages: {}
+    precision: [fp32]
+    required_tensors: []
+  - model_id: realesrgan-general-wdn-x4v3
+    enabled: false
+    architecture: SRVGGNetCompact
+    scale: 4
+    input_channels: 3
+    output_channels: 3
+    weight_filename: null
+    weight_sha256: null
+    weight_bytes: null
+    code_ref: unverified
+    code_license: BSD-3-Clause
+    required_packages: {}
+    precision: [fp32]
+    required_tensors: []

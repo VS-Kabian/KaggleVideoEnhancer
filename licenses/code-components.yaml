@@ -1,0 +1,31 @@
+schema_version: "1"
+components:
+  - name: EngVit
+    license: LicenseRef-Proprietary
+    source: local-workspace
+    distribution_review: required
+  - name: FFmpeg
+    license: runtime-build-dependent
+    source: https://ffmpeg.org/
+    distribution_review: required
+  - name: NumPy
+    license: BSD-3-Clause
+    source: https://github.com/numpy/numpy
+    distribution_review: required
+  - name: Pydantic
+    license: MIT
+    source: https://github.com/pydantic/pydantic
+    distribution_review: required
+  - name: PyYAML
+    license: MIT
+    source: https://github.com/yaml/pyyaml
+    distribution_review: required
+  - name: Spandrel
+    license: MIT
+    source: https://github.com/chaiNNer-org/spandrel
+    distribution_review: required
+  - name: SafeTensors
+    license: Apache-2.0
+    source: https://github.com/huggingface/safetensors
+    distribution_review: required
+

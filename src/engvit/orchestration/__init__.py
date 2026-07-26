@@ -1,0 +1,2 @@
+"""Atomic, resumable chunk orchestration."""
+

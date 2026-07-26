@@ -1,0 +1,70 @@
+- model_id: realesrgan-x2plus
+  code_license: BSD-3-Clause
+  code_url: https://github.com/xinntao/Real-ESRGAN
+  weight_status: unverified
+  weight_terms_url: https://github.com/xinntao/Real-ESRGAN/releases
+  weight_sha256: null
+  reviewed_by: engvit-plan-validation
+  reviewed_on: 2026-07-26
+  private_use: false
+  commercial_use: false
+  redistribution: false
+  notices:
+    - Checkpoint terms and exact SafeTensors hash must be reviewed before use.
+
+- model_id: realesrgan-x4plus
+  code_license: BSD-3-Clause
+  code_url: https://github.com/xinntao/Real-ESRGAN
+  weight_status: unverified
+  weight_terms_url: https://github.com/xinntao/Real-ESRGAN/releases
+  weight_sha256: null
+  reviewed_by: engvit-plan-validation
+  reviewed_on: 2026-07-26
+  private_use: false
+  commercial_use: false
+  redistribution: false
+  notices:
+    - Checkpoint terms and exact SafeTensors hash must be reviewed before use.
+
+- model_id: realesrgan-x4plus-anime
+  code_license: BSD-3-Clause
+  code_url: https://github.com/xinntao/Real-ESRGAN
+  weight_status: unverified
+  weight_terms_url: https://github.com/xinntao/Real-ESRGAN/releases
+  weight_sha256: null
+  reviewed_by: engvit-plan-validation
+  reviewed_on: 2026-07-26
+  private_use: false
+  commercial_use: false
+  redistribution: false
+  notices:
+    - Checkpoint terms and exact SafeTensors hash must be reviewed before use.
+
+- model_id: realesrgan-general-x4v3
+  code_license: BSD-3-Clause
+  code_url: https://github.com/xinntao/Real-ESRGAN
+  weight_status: unverified
+  weight_terms_url: https://github.com/xinntao/Real-ESRGAN/releases
+  weight_sha256: null
+  reviewed_by: engvit-plan-validation
+  reviewed_on: 2026-07-26
+  private_use: false
+  commercial_use: false
+  redistribution: false
+  notices:
+    - Both general and weak-denoise checkpoint terms and hashes require review.
+
+- model_id: realesrgan-general-wdn-x4v3
+  code_license: BSD-3-Clause
+  code_url: https://github.com/xinntao/Real-ESRGAN
+  weight_status: unverified
+  weight_terms_url: https://github.com/xinntao/Real-ESRGAN/releases
+  weight_sha256: null
+  reviewed_by: engvit-plan-validation
+  reviewed_on: 2026-07-26
+  private_use: false
+  commercial_use: false
+  redistribution: false
+  notices:
+    - Both general and weak-denoise checkpoint terms and hashes require review.
+

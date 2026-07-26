@@ -1,0 +1,14 @@
+schema_version: "1"
+contracts:
+  psnr_rgb_u8:
+    domain: RGB_uint8
+    data_range: 255
+    border_crop: 0
+    pooling: per_frame_then_distribution
+  lpips_alex_v0_1:
+    domain: RGB_float_minus1_to_1
+    network: alex
+    version: "0.1"
+    pooling: per_frame_then_distribution
+  blind_real_source_consistency:
+    claim: diagnostic_only_no_hr_reference

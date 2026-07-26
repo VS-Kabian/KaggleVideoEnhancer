@@ -1,0 +1,16 @@
+schema_version: "1"
+policy:
+  first_attempt_gpu: "NVIDIA Tesla P100"
+  allow_faster_fallback: true
+  fallback_rule: "Support is scoped to the exact recorded Kaggle GPU class; never claim generic Kaggle GPU support."
+required_observations:
+  - gpu_name
+  - driver_version
+  - torch_version
+  - cuda_version
+  - peak_vram_bytes
+  - peak_disk_bytes
+  - remaining_session_seconds
+  - end_to_end_fps
+  - wall_time_seconds
+  - encoder_identity

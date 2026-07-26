@@ -1,0 +1,18 @@
+schema_version: "1"
+entries:
+  - model_id: dove
+    state: watchlist
+    release_selectable: false
+  - model_id: stream-diffvsr
+    state: watchlist
+    release_selectable: false
+  - model_id: litevsr
+    state: watchlist
+    release_selectable: false
+  - model_id: infvsr
+    state: watchlist
+    release_selectable: false
+  - model_id: flashvsr
+    state: watchlist
+    release_selectable: false
+policy: "No watchlist model enters recipes without exact code, license, weight, environment, memory, quality, and full-duration acceptance evidence."

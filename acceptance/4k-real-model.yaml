@@ -1,0 +1,20 @@
+schema_version: "1"
+jobs:
+  - case_id: four-k-x2-real
+    source: "15-minute 1920x1080 30 fps compressed high-motion SDR holdout"
+    target: "3840x2160"
+    model: "approved x2 SafeTensors registry entry"
+  - case_id: four-k-x4-real
+    source: "15-minute 1280x720 30 fps mixed-content SDR holdout"
+    target: "3840x2160"
+    model: "approved compact x4 SafeTensors registry entry"
+required_operations:
+  - probe-and-full-timeline
+  - full-duration-analysis
+  - real-model-tiled-inference
+  - final-encode-and-remux
+  - stop-after-segment
+  - private-persistence
+  - new-session-hash-verification
+  - resume-and-retrieval
+  - independent-audit

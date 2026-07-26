@@ -1,0 +1,16 @@
+{
+  "dataset_handle": "owner/private-video-dataset",
+  "dataset_version": "1",
+  "dataset_root": "/kaggle/input/private-video-dataset",
+  "relative_video_path": "video.mp4",
+  "output_root": "/kaggle/working/engvit-jobs",
+  "job_id": "engvit-job",
+  "selected_video_index": null,
+  "target_width": 3840,
+  "target_height": 2160,
+  "fps_policy": "source_cfr",
+  "target_fps": null,
+  "chunk_frames": 300,
+  "crf": 18,
+  "preset": "medium"
+}

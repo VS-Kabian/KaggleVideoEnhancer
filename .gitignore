@@ -1,0 +1,17 @@
+.venv/
+.ipython/
+.jupyter/
+.notebook-smoke/
+.notebook-run/
+.tmp-probe/
+.tmp/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+evidence/releases/
+jobs/

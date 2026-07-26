@@ -1,0 +1,66 @@
+schema_version: "1"
+release_version: "0.1.0"
+minimum_gpu_policy: "P100 first; otherwise the exact faster Kaggle GPU class recorded by a PASS receipt"
+cases:
+  - case_id: phase0-fixtures
+    description: "Complete adversarial media fixture matrix through structural QA"
+    receipt_filename: phase0-fixtures.json
+    required_metrics: [structural, timing, color, metadata-privacy]
+  - case_id: phase0-fifteen-minute
+    description: "Deterministic 15-minute streaming and pause/resume plumbing job"
+    receipt_filename: phase0-fifteen-minute.json
+    required_metrics: [structural, av-sync, persistence-resume]
+  - case_id: minimum-gpu-admission
+    description: "Full target-geometry admission on the declared minimum Kaggle GPU"
+    receipt_filename: minimum-gpu-admission.json
+    required_metrics: [wall-time, peak-vram, peak-disk, encoder]
+  - case_id: four-k-x2-real
+    description: "15-minute 1080p to 4K approved real x2 model job"
+    receipt_filename: four-k-x2-real.json
+    required_metrics: [structural, encoder-roundtrip, temporal, color, banding, seams, human]
+  - case_id: four-k-x4-real
+    description: "15-minute 720p to 4K approved compact real x4 model job"
+    receipt_filename: four-k-x4-real.json
+    required_metrics: [structural, encoder-roundtrip, temporal, color, banding, seams, human]
+  - case_id: rife-real
+    description: "Cut-safe RIFE environment and full timing acceptance"
+    receipt_filename: rife-real.json
+    required_metrics: [structural, temporal, cuts]
+  - case_id: temporal-vsr-real
+    description: "Bounded temporal challenger improvement and full-duration admission"
+    receipt_filename: temporal-vsr-real.json
+    required_metrics: [structural, temporal, human, wall-time, peak-vram]
+  - case_id: eight-k-main10
+    description: "Exact 7680x4320 HEVC Main10 encode/decode and full experimental job"
+    receipt_filename: eight-k-main10.json
+    required_metrics: [encoder-main10, structural, temporal, color, persistence-resume]
+  - case_id: independent-audit
+    description: "Independent source-to-evidence release audit"
+    receipt_filename: independent-audit.json
+    required_metrics: [evidence-integrity]
+capability_requirements:
+  4k:
+    - phase0-fixtures
+    - phase0-fifteen-minute
+    - minimum-gpu-admission
+    - four-k-x2-real
+    - four-k-x4-real
+    - independent-audit
+  8k:
+    - phase0-fixtures
+    - phase0-fifteen-minute
+    - minimum-gpu-admission
+    - four-k-x2-real
+    - four-k-x4-real
+    - eight-k-main10
+    - independent-audit
+  rife:
+    - phase0-fixtures
+    - minimum-gpu-admission
+    - rife-real
+    - independent-audit
+  temporal_vsr:
+    - phase0-fixtures
+    - minimum-gpu-admission
+    - temporal-vsr-real
+    - independent-audit

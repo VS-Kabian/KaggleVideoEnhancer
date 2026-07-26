@@ -1,0 +1,14 @@
+{
+  "notebook_id": "owner/engvit-private",
+  "notebook_visibility": "unknown",
+  "internet_enabled": false,
+  "datasets": [
+    {
+      "handle": "owner/private-video-dataset",
+      "version": "1",
+      "role": "media",
+      "visibility": "unknown"
+    }
+  ],
+  "visibility_attestation": null
+}

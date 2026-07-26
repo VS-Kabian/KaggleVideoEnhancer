@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "engvit"
+version = "0.1.0"
+description = "Validated, resumable Kaggle video enhancement and upscaling pipeline"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "LicenseRef-Proprietary"
+authors = [{ name = "EngVit contributors" }]
+dependencies = [
+  "numpy>=1.26,<3",
+  "pydantic>=2.7,<3",
+  "PyYAML>=6,<7",
+]
+
+[project.scripts]
+engvit = "engvit.cli:entrypoint"
+
+[project.optional-dependencies]
+dev = [
+  "hypothesis>=6.100,<7",
+  "imageio-ffmpeg==0.6.0",
+  "ipykernel>=6.29,<7",
+  "mypy>=1.10,<2",
+  "nbclient>=0.10,<1",
+  "nbformat>=5.10,<6",
+  "pytest>=8.2,<9",
+  "ruff>=0.5,<1",
+  "types-PyYAML>=6.0.12,<7",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-config --strict-markers"
+testpaths = ["tests"]
+markers = [
+  "integration: exercises real external binaries and filesystem boundaries",
+]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+packages = ["engvit"]

@@ -1,0 +1,13 @@
+schema_version: "1"
+enabled_by_default: false
+exact_target: "7680x4320"
+required_encoder: "HEVC Main10"
+required_pixel_format: "p010le for admitted hardware encoding or yuv420p10le for software x265"
+minimum_probe: "two high-entropy full-resolution GOPs with final settings"
+required_operations:
+  - software-decode-verification
+  - exact-frame-and-pts-check
+  - full-recipe-benchmark
+  - storage-and-session-admission
+  - interruption-persistence-resume
+  - complete-quality-evidence

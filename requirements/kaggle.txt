@@ -1,0 +1,4 @@
+# Install from the audited offline wheelhouse only. Do not install or replace
+# torch, torchvision, CUDA, or NumPy in the Kaggle runtime.
+pydantic>=2.7,<3
+PyYAML>=6,<7

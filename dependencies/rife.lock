@@ -1,0 +1,9 @@
+schema_version: "1"
+enabled: false
+upstream_url: "https://github.com/hzwer/ECCV2022-RIFE"
+commit: null
+code_archive_sha256: null
+license_id: null
+weight_filename: null
+weight_sha256: null
+reason: "Disabled: official commit, redistribution terms, weight hash, and active Kaggle image parity are not yet approved."

@@ -1,0 +1,23 @@
+schema_version: "1"
+policy:
+  invocation:
+    allowed: true
+    conditions:
+      - Record ffmpeg -version, -L, -buildconf, origin, and SHA-256.
+      - Use only codecs enabled by the reviewed runtime binary.
+  redistribution:
+    allowed: false
+    conditions:
+      - Separate legal review is required before bundling an FFmpeg binary.
+      - GPL and nonfree build flags must be reviewed together.
+  metadata:
+    default: strip
+    allow:
+      - color_range
+      - color_space
+      - color_transfer
+      - color_primaries
+      - sample_aspect_ratio
+      - language
+      - disposition
+
