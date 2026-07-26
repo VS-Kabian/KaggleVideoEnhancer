@@ -113,6 +113,10 @@ def test_every_telecine_phase_routes_to_one_full_span_ivtc_mezzanine() -> None:
         assert preparation.kind == "full_span_ivtc_mezzanine"
         assert preparation.continuous is True
         assert preparation.expected_fps == Rational(24000, 1001)
+        assert "-fps_mode" not in preparation.output_options
+        assert preparation.output_options[
+            preparation.output_options.index("-vsync") + 1
+        ] == "0"
         observed_filters.add(preparation.video_filter)
     assert observed_filters == {
         "fieldmatch=order=tff:combmatch=full,decimate=cycle=5"

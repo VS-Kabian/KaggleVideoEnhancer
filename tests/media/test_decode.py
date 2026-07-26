@@ -4,9 +4,23 @@ from pathlib import Path
 
 import pytest
 
+import engvit.media.decode as decode_module
 from engvit.media.decode import decode_normalized_frames
 from engvit.orchestration.chunks import ChunkPolicy, plan_chunks
 from tests.media.pipeline_helpers import ffmpeg_path, make_video, pipeline_contract
+
+
+def test_decoder_command_uses_kaggle_compatible_passthrough_sync() -> None:
+    command = decode_module._decoder_command(
+        source=Path("source.mkv"),
+        video_stream_index=0,
+        input_options=("-noautorotate",),
+        filters=("setpts=N",),
+        ffmpeg_path=Path("ffmpeg"),
+    )
+
+    assert "-fps_mode" not in command
+    assert command[command.index("-vsync") + 1] == "0"
 
 
 @pytest.mark.integration
@@ -39,4 +53,3 @@ def test_real_decoder_yields_exact_core_count_shape_and_dtype(tmp_path: Path) ->
     assert len(frames) == 3
     assert all(frame.shape == (36, 64, 3) for frame in frames)
     assert all(frame.dtype.name == "uint8" for frame in frames)
-

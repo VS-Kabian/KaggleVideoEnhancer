@@ -27,6 +27,40 @@ def _read_exact(stream: IO[bytes], count: int) -> bytes:
     return b"".join(chunks)
 
 
+def _decoder_command(
+    *,
+    source: Path,
+    video_stream_index: int,
+    input_options: tuple[str, ...],
+    filters: tuple[str, ...],
+    ffmpeg_path: Path,
+) -> list[str]:
+    return [
+        str(ffmpeg_path),
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-nostdin",
+        *input_options,
+        "-i",
+        str(source),
+        "-map",
+        f"0:{video_stream_index}",
+        "-an",
+        "-sn",
+        "-dn",
+        "-vf",
+        ",".join(filters),
+        "-f",
+        "rawvideo",
+        "-pix_fmt",
+        "rgb24",
+        "-vsync",
+        "0",
+        "-",
+    ]
+
+
 def decode_normalized_frames(
     *,
     source: Path,
@@ -53,30 +87,13 @@ def decode_normalized_frames(
         ),
         "setpts=N",
     )
-    command = [
-        str(ffmpeg_path),
-        "-hide_banner",
-        "-loglevel",
-        "error",
-        "-nostdin",
-        *filter_graph.input_options,
-        "-i",
-        str(source),
-        "-map",
-        f"0:{video_stream_index}",
-        "-an",
-        "-sn",
-        "-dn",
-        "-vf",
-        ",".join(filters),
-        "-f",
-        "rawvideo",
-        "-pix_fmt",
-        "rgb24",
-        "-fps_mode",
-        "passthrough",
-        "-",
-    ]
+    command = _decoder_command(
+        source=source,
+        video_stream_index=video_stream_index,
+        input_options=filter_graph.input_options,
+        filters=filters,
+        ffmpeg_path=ffmpeg_path,
+    )
     frame_bytes = width * height * 3
     with tempfile.TemporaryFile(mode="w+t", encoding="utf-8") as errors:
         process = subprocess.Popen(

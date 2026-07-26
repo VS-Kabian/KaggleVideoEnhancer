@@ -138,7 +138,7 @@ Rules:
 - `fieldmatch,decimate` is planned as a continuous timing transform. If safe cadence boundaries cannot be proven, create progressive compressed mezzanine segments before SR rather than restart IVTC at arbitrary chunks.
 - Stateful filters receive pre/post-roll; only the normalized core is retained.
 - Raw decoder output is bound to `OutputFrameSpec` by exact index after explicit `fps,settb,setpts`. Byte count and decoded frame count must match.
-- Encoder stdin declares `-f rawvideo -pixel_format rgb24 -video_size WxH -framerate NUM/DEN`; the output uses the frozen rational `-fps_mode passthrough` and `-enc_time_base` contract, then validates time base, frame count, and PTS. Active-FFmpeg integration tests, not option-name assumptions, are authoritative.
+- Encoder stdin declares `-f rawvideo -pixel_format rgb24 -video_size WxH -framerate NUM/DEN`; the output uses the Kaggle-compatible `-vsync 0` passthrough and frozen rational `-enc_time_base` contract, then validates time base, frame count, and PTS. Active-FFmpeg integration tests, not option-name assumptions, are authoritative.
 - A true-VFR future path requires a timestamped transport such as NUT/PyAV and is out of MVP scope.
 
 Scene and chunk coordinates are normalized output coordinates with a reverse source-PTS mapping. A chunk identity includes source decode range, normalized core range, timing plan hash, and context.

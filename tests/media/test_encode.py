@@ -4,11 +4,23 @@ from pathlib import Path
 
 import pytest
 
-from engvit.media.encode import encode_segment
+from engvit.media.encode import _encoder_command, encode_segment
 from engvit.media.segments import scan_framehash
 from engvit.orchestration.chunks import ChunkPolicy, plan_chunks
 from tests.analysis.helpers import timeline
 from tests.media.pipeline_helpers import encoder_config, ffmpeg_path, rgb_frames
+
+
+def test_encoder_command_uses_kaggle_compatible_passthrough_sync() -> None:
+    command = _encoder_command(
+        encoder_config(),
+        (64, 36),
+        Path("segment.mkv"),
+        Path("ffmpeg"),
+    )
+
+    assert "-fps_mode" not in command
+    assert command[command.index("-vsync") + 1] == "0"
 
 
 @pytest.mark.integration
@@ -67,4 +79,3 @@ def test_encoder_rejects_wrong_frame_count_before_commit(tmp_path: Path) -> None
             output_path=tmp_path / "segment.mkv",
             ffmpeg_path=ffmpeg_path(),
         )
-

@@ -537,7 +537,7 @@ python -m pytest tests/orchestration -q
 **Steps:**
 
 - [ ] Decoder uses explicit filter graph, `-noautorotate`, `rgb24`, and verifies exact byte/frame counts by normalized index.
-- [ ] Encoder rawvideo stdin declares exact size/rational framerate; use and integration-test the frozen rational `-fps_mode passthrough`/`-enc_time_base` contract; freeze GOP/B-frame/color/time-base behavior.
+- [ ] Encoder rawvideo stdin declares exact size/rational framerate; use and integration-test the Kaggle-compatible `-vsync 0` passthrough and frozen rational `-enc_time_base` contract; freeze GOP/B-frame/color/time-base behavior.
 - [ ] Create per-encoder templates with IDR first frame, closed fixed GOP, scene-cut disabled, repeated headers where required; verify active options.
 - [ ] Validate stream layout, codec/profile/level/tag/extradata, dimensions/SAR/pixfmt/field/color/rate/time-base before concat; write exact rational durations.
 - [ ] Use generated relative concat names, `-safe 1`, `-nostdin`; scan all packets and decode all frames after concat; compare boundary hashes.
