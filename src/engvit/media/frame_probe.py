@@ -120,7 +120,7 @@ def stream_source_timing(
         "-show_entries",
         (
             "frame=media_type,best_effort_timestamp,duration,pkt_duration,"
-            "repeat_pict,interlaced_frame,top_field_first:frame_side_data="
+            "repeat_pict,interlaced_frame,top_field_first"
         ),
         "-of",
         "compact=p=0:nk=0",

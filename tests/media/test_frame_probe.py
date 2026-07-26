@@ -41,7 +41,7 @@ def test_parse_frame_lines_ignores_compact_frame_side_data_suffix() -> None:
     assert frames[0].repeat_pict == 0
 
 
-def test_stream_source_timing_excludes_nested_frame_side_data(
+def test_stream_source_timing_uses_kaggle_supported_frame_entries(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     captured_command: list[str] = []
@@ -85,7 +85,7 @@ def test_stream_source_timing_excludes_nested_frame_side_data(
 
     assert len(frames) == 1
     show_entries = captured_command[captured_command.index("-show_entries") + 1]
-    assert ":frame_side_data=" in show_entries
+    assert ":frame_side_data=" not in show_entries
 
 
 @pytest.mark.parametrize(
