@@ -28,6 +28,11 @@ def _apply_profile(
             "    WORKSPACE,\n"
             "    Path(\"/kaggle/input/engvit-code\"),"
         ),
+        'NESTED_SOURCE_ROOTS = (\n    Path("/kaggle/input/engvit-code"),': (
+            "NESTED_SOURCE_ROOTS = (\n"
+            '    Path("/kaggle/input/datasets/mukikabi006/engvit-code"),\n'
+            '    Path("/kaggle/input/engvit-code"),'
+        ),
         "SMOKE_MODE = True": "SMOKE_MODE = False",
         "RUN_JOB = SMOKE_MODE  # changing SMOKE_MODE to False also makes execution opt-in": (
             "RUN_JOB = True  # process one verified segment, then pause"
@@ -105,18 +110,41 @@ SOURCE_ROOT_CANDIDATES = (
     Path("/kaggle/input/engvit-code"),
     Path("/kaggle/working/EngVit"),
 )
+NESTED_SOURCE_ROOTS = (
+    Path("/kaggle/input/engvit-code"),
+)
 if Path("/kaggle/input").is_dir():
     SOURCE_ROOT_CANDIDATES += tuple(
         path
         for path in sorted(Path("/kaggle/input").iterdir())
         if path.is_dir()
     )
-SOURCE_ROOT = next(
-    (root for root in SOURCE_ROOT_CANDIDATES if (root / "src" / "engvit").is_dir()),
-    None,
-)
-if SOURCE_ROOT is None:
-    raise RuntimeError("Attach the EngVit code Dataset or run from the repository root.")
+
+source_matches = {
+    root.resolve()
+    for root in SOURCE_ROOT_CANDIDATES
+    if (root / "src" / "engvit").is_dir()
+}
+for attached_root in NESTED_SOURCE_ROOTS:
+    if not attached_root.is_dir():
+        continue
+    contained_root = attached_root.resolve()
+    for pattern in ("*/src/engvit", "*/*/src/engvit"):
+        for package_path in attached_root.glob(pattern):
+            if package_path.is_symlink() or not package_path.is_dir():
+                continue
+            candidate_root = package_path.parents[1].resolve()
+            if candidate_root.is_relative_to(contained_root):
+                source_matches.add(candidate_root)
+
+if not source_matches:
+    raise RuntimeError(
+        "The attached EngVit code Dataset does not expose src/engvit at its "
+        "root or beneath one supported wrapper directory."
+    )
+if len(source_matches) > 1:
+    raise RuntimeError("The code Dataset contains ambiguous EngVit source roots.")
+SOURCE_ROOT = next(iter(source_matches))
 sys.path.insert(0, str(SOURCE_ROOT / "src"))
 
 FFMPEG = shutil.which("ffmpeg")

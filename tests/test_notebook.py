@@ -49,6 +49,9 @@ def test_personalized_kaggle_notebook_has_exact_attached_dataset_paths() -> None
     assert "SMOKE_MODE = False" in code
     assert "RUN_JOB = True" in code
     assert "MAX_NEW_CHUNKS = 1" in code
+    assert '("*/src/engvit", "*/*/src/engvit")' in code
+    assert "attached_root.glob(pattern)" in code
+    assert "ambiguous EngVit source roots" in code
     for index, cell in enumerate(notebook.cells):
         if cell.cell_type == "code":
             compile(cell.source, f"personalized-notebook-cell-{index}", "exec")
