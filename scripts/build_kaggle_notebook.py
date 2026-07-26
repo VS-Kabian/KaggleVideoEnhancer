@@ -3,13 +3,73 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 from pathlib import Path
 
 import nbformat
 from nbformat.v4 import new_code_cell, new_markdown_cell, new_notebook
 
 
-def build_notebook() -> nbformat.NotebookNode:
+def _apply_profile(
+    notebook: nbformat.NotebookNode,
+    profile: str,
+) -> nbformat.NotebookNode:
+    if profile == "generic":
+        return notebook
+    if profile != "mukikabi006":
+        raise ValueError(f"unknown notebook profile: {profile}")
+
+    replacements = {
+        "# EngVit: private, resumable video enhancement on Kaggle": (
+            "# EngVit: mukikabi006 private video enhancement"
+        ),
+        "    WORKSPACE,\n    Path(\"/kaggle/input/engvit-code\"),": (
+            "    Path(\"/kaggle/input/datasets/mukikabi006/engvit-code\"),\n"
+            "    WORKSPACE,\n"
+            "    Path(\"/kaggle/input/engvit-code\"),"
+        ),
+        "SMOKE_MODE = True": "SMOKE_MODE = False",
+        "RUN_JOB = SMOKE_MODE  # changing SMOKE_MODE to False also makes execution opt-in": (
+            "RUN_JOB = True  # process one verified segment, then pause"
+        ),
+        "MAX_NEW_CHUNKS = None  # e.g. 1 stops after the next committed segment": (
+            "MAX_NEW_CHUNKS = 1  # stop after the next committed segment"
+        ),
+        'NOTEBOOK_ID = "owner/engvit-private"': (
+            'NOTEBOOK_ID = "mukikabi006/engvit-private"'
+        ),
+        'NOTEBOOK_VISIBILITY = "unknown"  # private, public, or unknown': (
+            'NOTEBOOK_VISIBILITY = "private"  # verify in Kaggle before running'
+        ),
+        'DATASET_VISIBILITY = "unknown"   # private, public, or unknown': (
+            'DATASET_VISIBILITY = "private"   # verify in Kaggle before running'
+        ),
+        'DATASET_HANDLE = "owner/private-video-dataset"': (
+            'DATASET_HANDLE = "mukikabi006/private-video-dataset"'
+        ),
+        'DATASET_ROOT = Path("/kaggle/input/private-video-dataset")': (
+            'DATASET_ROOT = Path('
+            '"/kaggle/input/datasets/mukikabi006/private-video-dataset"'
+            ")"
+        ),
+        'RELATIVE_VIDEO_PATH = "video.mp4"': (
+            'RELATIVE_VIDEO_PATH = "GH011828.realesrgan.mkv"'
+        ),
+        'JOB_ID = "engvit-job"': 'JOB_ID = "gh011828-phase0"',
+    }
+    for cell in notebook.cells:
+        source = cell.source
+        for old, new in replacements.items():
+            source = source.replace(old, new)
+        cell.source = source
+    notebook.metadata["engvit_profile"] = profile
+    return notebook
+
+
+def build_notebook(
+    *,
+    profile: str = "generic",
+) -> nbformat.NotebookNode:
     cells = [
         new_markdown_cell(
             """# EngVit: private, resumable video enhancement on Kaggle
@@ -344,7 +404,11 @@ print(continuation_summary)"""
   acceptance evidence are attached. No cell silently enables it."""
         ),
     ]
-    return new_notebook(
+    for index, cell in enumerate(cells):
+        digest = hashlib.sha256(cell.source.encode("utf-8")).hexdigest()[:12]
+        cell["id"] = f"engvit-{index:02d}-{digest}"
+
+    notebook = new_notebook(
         cells=cells,
         metadata={
             "kernelspec": {
@@ -355,13 +419,19 @@ print(continuation_summary)"""
             "language_info": {"name": "python", "pygments_lexer": "ipython3"},
         },
     )
+    return _apply_profile(notebook, profile)
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--profile",
+        choices=("generic", "mukikabi006"),
+        default="generic",
+    )
     args = parser.parse_args()
-    notebook = build_notebook()
+    notebook = build_notebook(profile=args.profile)
     nbformat.validate(notebook)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     nbformat.write(notebook, args.output)
